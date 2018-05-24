@@ -4,7 +4,7 @@ import VueCookie from 'vue-cookie'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
 import Course from '@/components/Course'
-import Grades from '@/components/Grades'
+import User from '@/components/User'
 
 Vue.use(Router)
 
@@ -30,9 +30,9 @@ const router = new Router({
       component: Course
     },
     {
-      path: '/grades',
-      name: 'Grades',
-      component: Grades
+      path: '/user',
+      name: 'User',
+      component: User
     }
   ]
 })
