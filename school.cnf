@@ -1,7 +1,0 @@
-[client]
-HOST=localhost
-PORT=3306
-database=school
-default-character-set=utf8
-user=school
-password=yellowsea
