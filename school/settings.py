@@ -52,6 +52,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'school.urls'
+TEACHER_URLCONF = 'school.teacher_urls'
+ADMIN_URLCONF = 'school.admin_urls'
 
 TEMPLATES = [
     {

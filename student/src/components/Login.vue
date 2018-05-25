@@ -57,6 +57,19 @@ export default {
   methods: {
     login: function () {
       if (this.$refs.loginForm.validate()) {
+        let loginInfo = JSON.stringify({
+          'id': this.loginData.studentID,
+          'password': this.loginData.password
+        })
+        this.$axios.post('login/', loginInfo)
+          .then(response => {
+            this.$cookie.set('id', this.loginData.studentID)
+            this.$router.push('/')
+          })
+          .catch(error => {
+            this.loginData.errorAlert = true
+            this.loginData.error = error
+          })
       }
     }
   }

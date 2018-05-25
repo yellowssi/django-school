@@ -2,7 +2,7 @@
   <div class="Login">
     <v-card class="text-xs-center" max-width=500>
       <v-toolbar dark color="light-blue darken-4">
-        <v-toolbar-title>登录</v-toolbar-title>
+        <v-toolbar-title>教师登录</v-toolbar-title>
       </v-toolbar>
       <v-alert
         type="error"
@@ -14,9 +14,9 @@
         <v-form v-model="valid" ref="loginForm" lazy-validation>
           <v-text-field
             prepend-icon="person"
-            label="学号"
-            :rules="loginData.studentIDRules"
-            v-model="loginData.studentID"
+            label="工号"
+            :rules="loginData.teacherIDRules"
+            v-model="loginData.teacherID"
             required></v-text-field>
           <v-text-field
             prepend-icon="lock"
@@ -44,9 +44,9 @@ export default {
       errorAlert: false,
       error: null,
       visible: false,
-      studentID: null,
-      studentIDRules: [
-        (v) => !!v || '学号不能为空'
+      teacherID: null,
+      teacherIDRules: [
+        (v) => !!v || '工号不能为空'
       ],
       password: null,
       passwordRules: [
@@ -57,6 +57,19 @@ export default {
   methods: {
     login: function () {
       if (this.$refs.loginForm.validate()) {
+        let loginInfo = JSON.stringify({
+          'id': this.loginData.teacherID,
+          'password': this.loginData.password
+        })
+        this.$axios.post('login/', loginInfo)
+          .then(response => {
+            this.$cookie.set('id', this.loginData.teacherID)
+            this.$router.push('/')
+          })
+          .catch(error => {
+            this.loginData.errorAlert = true
+            this.loginData.error = error
+          })
       }
     }
   }
