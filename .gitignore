@@ -9,5 +9,5 @@ out
 gen
 
 /static/
-__pychace__/
+__pycache__/
 school.cnf
