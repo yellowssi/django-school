@@ -14,7 +14,7 @@ Vue.config.productionTip = true
 Vue.use(Vuetify)
 
 Vue.prototype.$axios = Axios.create({
-  baseURL: 'http://jwc.yellowsea.top/api/',
+  baseURL: 'http://admin.yellowsea.top/api/',
   headers: {'Content-Type': 'Application/json;charset=utf-8'},
   withCredentials: true,
   timeout: 5000

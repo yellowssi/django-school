@@ -43,7 +43,7 @@ class TeacherSerializer(serializers.HyperlinkedModelSerializer):
 class SemesterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Semester
-        fields = ('id', 'year', 'season', 'start_date', 'end_date')
+        fields = ('id', 'year', 'season', 'start_date', 'end_date', 'status')
 
 
 class CourseSerializer(serializers.HyperlinkedModelSerializer):

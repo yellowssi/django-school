@@ -89,7 +89,6 @@ class TeacherLoginAPI(APIView):
                 teacher = User.objects.get(id=teacher_id, is_teacher=True)
                 if teacher.check_password(password) and Teacher.objects.filter(user=teacher).exists():
                     request.session['id'] = teacher.id
-                    request.session['teacher'] = True
                     return Response({'detail': 0})
                 else:
                     return Response({'detail': 1})
@@ -107,13 +106,21 @@ class AdminLoginAPI(APIView):
                 admin = User.objects.get(id=admin_id, is_admin=True)
                 if admin.check_password(password):
                     request.session['id'] = admin.id
-                    request.session['admin'] = True
                     return Response({'detail': 0})
                 else:
                     return Response({'detail': 1})
             except Exception as e:
                 return Response({'detail': 1})
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogoutAPI(APIView):
+    def get(self, request, format=None):
+        try:
+            del request.session['id']
+        except Exception:
+            pass
+        return Response({'detail': 0})
 
 
 class StudentListAPI(APIView):
@@ -175,12 +182,23 @@ class SemesterAPI(APIView):
 
     def post(self, request, format=None):
         year = request.data['year']
-        season = request.data['season']
-        start_date = request.data['start_date']
-        end_date = request.data['end_date']
-        if year and season and start_date and end_date:
-            semester = Semester.objects.create(year=year, season=season, start_date=start_date, end_date=end_date)
-            if semester:
+        autumn_start_date = request.data['autumn_start_date']
+        autumn_end_date = request.data['autumn_end_date']
+        winter_start_date = request.data['winter_start_date']
+        winter_end_date = request.data['winter_end_date']
+        spring_start_date = request.data['spring_start_date']
+        spring_end_date = request.data['spring_end_date']
+        summer_start_date = request.data['summer_start_date']
+        summer_end_date = request.data['summer_end_date']
+        if year and autumn_start_date and autumn_end_date\
+                and winter_start_date and winter_end_date\
+                and spring_start_date and spring_end_date\
+                and summer_start_date and summer_end_date:
+            autumn_semester = Semester.objects.create(year=year, season='autumn', start_date=autumn_start_date, end_date=autumn_end_date)
+            winter_semester = Semester.objects.create(year=year, season='winter', start_date=winter_start_date, end_date=winter_end_date)
+            spring_semester = Semester.objects.create(year=year, season='spring', start_date=spring_start_date, end_date=spring_end_date)
+            summer_semester = Semester.objects.create(year=year, season='summer', start_date=summer_start_date, end_date=summer_end_date)
+            if autumn_semester and winter_semester and spring_semester and summer_semester:
                 return Response({'detail': 0})
         return Response(status=status.HTTP_400_BAD_REQUEST)
 

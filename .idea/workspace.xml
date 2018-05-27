@@ -9,10 +9,15 @@
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jwc/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/jwc/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/components/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/components/Home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/admin/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwc/admin_urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/jwc/admin_urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwc/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/jwc/permissions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jwc/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/jwc/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwc/teacher_urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/jwc/teacher_urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwc/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/jwc/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jwc/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/jwc/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/school/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/school/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/school/hosts.py" beforeDir="false" afterPath="$PROJECT_DIR$/school/hosts.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/admin/css/autocomplete.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/static/admin/css/base.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/static/admin/css/changelists.css" beforeDir="false" />
@@ -164,6 +169,9 @@
       <change beforePath="$PROJECT_DIR$/static/rest_framework/js/default.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/static/rest_framework/js/jquery-3.3.1.min.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/static/rest_framework/js/prettify-min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/student/src/components/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/student/src/components/Home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teacher/src/components/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/teacher/src/components/Home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teacher/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/teacher/src/main.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -180,10 +188,55 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/jwc/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="857">
-              <caret line="359" lean-forward="true" selection-start-line="359" selection-end-line="359" />
+            <state relative-caret-position="388">
+              <caret line="191" column="55" selection-start-line="191" selection-start-column="55" selection-end-line="191" selection-end-column="55" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jwc/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1540">
+              <caret line="138" column="70" selection-start-line="138" selection-start-column="70" selection-end-line="138" selection-end-column="70" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="teacher_urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jwc/teacher_urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="308">
+              <caret line="11" column="85" selection-start-line="11" selection-start-column="85" selection-end-line="11" selection-end-column="85" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin_urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jwc/admin_urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="12" column="36" lean-forward="true" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jwc/serializers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="464">
+              <caret line="45" column="75" selection-start-line="45" selection-start-column="75" selection-end-line="45" selection-end-column="75" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -207,12 +260,14 @@
         <option value="$PROJECT_DIR$/school/settings.py" />
         <option value="$PROJECT_DIR$/frontend/src/main.js" />
         <option value="$PROJECT_DIR$/school.cnf" />
-        <option value="$PROJECT_DIR$/jwc/permissions.py" />
-        <option value="$PROJECT_DIR$/jwc/urls.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/school/urls.py" />
-        <option value="$PROJECT_DIR$/jwc/serializers.py" />
         <option value="$PROJECT_DIR$/jwc/models.py" />
+        <option value="$PROJECT_DIR$/jwc/permissions.py" />
+        <option value="$PROJECT_DIR$/jwc/urls.py" />
+        <option value="$PROJECT_DIR$/jwc/admin_urls.py" />
+        <option value="$PROJECT_DIR$/jwc/teacher_urls.py" />
+        <option value="$PROJECT_DIR$/jwc/serializers.py" />
         <option value="$PROJECT_DIR$/jwc/views.py" />
       </list>
     </option>
@@ -319,7 +374,14 @@
       <option name="project" value="LOCAL" />
       <updated>1527207156347</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="backend">
+      <created>1527398456247</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1527398456247</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -335,7 +397,7 @@
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32765532" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18910256" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19123931" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -359,9 +421,35 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="frame" />
-    <option name="LAST_COMMIT_MESSAGE" value="frame" />
+    <MESSAGE value="backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="backend" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/jwc/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8708">
+          <caret line="320" column="45" selection-start-line="320" selection-start-column="27" selection-end-line="320" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jwc/teacher_urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="11" column="85" selection-start-line="11" selection-start-column="85" selection-end-line="11" selection-end-column="85" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/jwc/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5796">
@@ -437,13 +525,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/src/main.js" />
-    <entry file="file://$PROJECT_DIR$/jwc/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="2" column="3" lean-forward="true" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/school.cnf" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
@@ -459,27 +540,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/jwc/models.py">
+    <entry file="file://$PROJECT_DIR$/jwc/permissions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-669">
-          <caret line="138" column="70" selection-start-line="138" selection-start-column="70" selection-end-line="138" selection-end-column="70" />
+        <state relative-caret-position="1064">
+          <caret line="38" column="22" selection-start-line="38" selection-start-column="22" selection-end-line="38" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jwc/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="8" column="55" selection-start-line="8" selection-start-column="55" selection-end-line="8" selection-end-column="55" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/jwc/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="110" column="29" selection-start-line="110" selection-start-column="6" selection-end-line="110" selection-end-column="29" />
+        <state relative-caret-position="464">
+          <caret line="45" column="75" selection-start-line="45" selection-start-column="75" selection-end-line="45" selection-end-column="75" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/jwc/teacher_urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="11" column="85" selection-start-line="11" selection-start-column="85" selection-end-line="11" selection-end-column="85" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jwc/admin_urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="12" column="36" lean-forward="true" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jwc/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1540">
+          <caret line="138" column="70" selection-start-line="138" selection-start-column="70" selection-end-line="138" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/jwc/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="857">
-          <caret line="359" lean-forward="true" selection-start-line="359" selection-end-line="359" />
+        <state relative-caret-position="388">
+          <caret line="191" column="55" selection-start-line="191" selection-start-column="55" selection-end-line="191" selection-end-column="55" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
