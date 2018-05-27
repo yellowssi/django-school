@@ -1,11 +1,17 @@
 from rest_framework import serializers
-from .models import (College, Student, Teacher, Course, SemesterCourse, StudentSemesterCourse)
+from .models import (College, User, Student, Teacher, Semester, Course, SemesterCourse, StudentSemesterCourse)
 
 
 class CollegeSerializer(serializers.ModelSerializer):
     class Meta:
         model = College
         fields = ('id', 'name', 'address', 'tel')
+
+
+class AdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'name', 'gender', 'birth', 'mobile')
 
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):
@@ -32,6 +38,12 @@ class TeacherSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Teacher
         fields = ('id', 'name', 'gender', 'birth', 'mobile', 'title', 'salary', 'college_name')
+
+
+class SemesterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Semester
+        fields = ('id', 'year', 'season', 'start_date', 'end_date')
 
 
 class CourseSerializer(serializers.HyperlinkedModelSerializer):

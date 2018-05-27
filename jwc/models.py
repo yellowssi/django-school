@@ -134,8 +134,9 @@ class Semester(models.Model):
                                   ('spring', '春季学期'),
                                   ('summer', '夏季学期')
                               ), verbose_name='学期')
-    start_date = models.DateField(unique_for_date=True)
-    end_date = models.DateField(unique_for_date=True)
+    start_date = models.DateField(unique_for_date=True, verbose_name='开始日期')
+    end_date = models.DateField(unique_for_date=True, verbose_name='结束日期')
+    status = models.BooleanField(default=False, verbose_name='是否开放选课')
 
     class Meta:
         db_table = 'semester'
