@@ -210,11 +210,22 @@ class SemesterStatusAPI(APIView):
         semester_id = request.data['semester_id']
         try:
             semester = Semester.objects.get(id=semester_id)
-            if not semester.status:
-                Semester.objects.filter(status=True).update(status=False)
-                semester.status = True
-                semester.save()
-                return Response({'detail': 0})
+            operation = request.data['operation']
+            if operation == 1:
+                if not semester.status:
+                    Semester.objects.filter(status=True).update(status=False)
+                    semester.status = True
+                    semester.save()
+                    return Response({'detail': 0})
+                else:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+            elif operation == 2:
+                if semester.status:
+                    semester.status = False
+                    semester.save()
+                    return Response({'detail': 0})
+                else:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:

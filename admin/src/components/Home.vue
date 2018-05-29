@@ -33,7 +33,7 @@
     </v-toolbar>
     <v-content>
       <v-container fluid>
-        <router-view></router-view>
+        <router-view name="body"></router-view>
       </v-container>
     </v-content>
   </div>

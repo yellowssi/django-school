@@ -67,7 +67,7 @@ export default {
             this.$router.push('/')
           })
           .catch(error => {
-            this.loginData.errorAlert = true,
+            this.loginData.errorAlert = true
             this.loginData.error = error
           })
       }
