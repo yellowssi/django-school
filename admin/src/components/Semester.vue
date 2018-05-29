@@ -405,14 +405,14 @@ export default {
               id: response.data[i].id,
               year: response.data[i].year,
               season: response.data[i].season,
-              startDate: response.data[i].startDate,
-              endDate: response.data[i].endDate,
+              startDate: response.data[i].start_date,
+              endDate: response.data[i].end_date,
               status: response.data[i].status
             })
           }
         })
         .catch(error => {
-          console.log(error)
+          window.alert(error)
         })
     },
     openSemesterCourse: function (semesterId) {
@@ -426,7 +426,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error)
+          window.alert(error)
         })
     },
     closeSemesterCourse: function (semesterId) {
@@ -437,7 +437,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error)
+          window.alert(error)
         })
     },
     addSemester: function () {
@@ -462,8 +462,7 @@ export default {
             }
           })
           .catch(error => {
-            console.log(error)
-            window.alert('网络错误！')
+            window.alert(error)
           })
       }
     }

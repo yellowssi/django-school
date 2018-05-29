@@ -111,7 +111,7 @@ class Teacher(models.Model):
     title = models.CharField(max_length=10,
                              choices=(
                                  ('professor', '教授'),
-                                 ('Associate', '副教授'),
+                                 ('associate', '副教授'),
                                  ('lecturer', '讲师'),
                                  ('assistant', '助教')
                              ), verbose_name='职称')
