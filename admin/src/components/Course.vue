@@ -184,10 +184,10 @@ export default {
     getColleges: function () {
       this.$axios.get('college/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['colleges'].length; i++) {
             this.colleges.push({
-              text: response.data[i].name,
-              value: response.data[i].id
+              text: response.data['colleges'][i].name,
+              value: response.data['colleges'][i].id
             })
           }
         })
@@ -198,10 +198,10 @@ export default {
     getTeachers: function () {
       this.$axios.get('teacher/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['teachers'].length; i++) {
             this.teachers.push({
-              text: response.data[i].name,
-              value: response.data[i].id
+              text: response.data['teachers'][i].name,
+              value: response.data['teachers'][i].id
             })
           }
         })
@@ -212,14 +212,14 @@ export default {
     getSemesters: function () {
       this.$axios.get('semester/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['semesters'].length; i++) {
             this.semesters.push({
-              id: response.data[i].id,
-              year: response.data[i].year,
-              season: response.data[i].season,
-              startDate: response.data[i].start_date,
-              endDate: response.data[i].end_date,
-              status: response.data[i].status
+              id: response.data['semesters'][i].id,
+              year: response.data['semesters'][i].year,
+              season: response.data['semesters'][i].season,
+              startDate: response.data['semesters'][i].start_date,
+              endDate: response.data['semesters'][i].end_date,
+              status: response.data['semesters'][i].status
             })
           }
         })
@@ -230,13 +230,13 @@ export default {
     getCourses: function () {
       this.$axios.get('course/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['courses'].length; i++) {
             this.courses.push({
-              id: this.response.data[i].id,
-              name: this.response.data[i].name,
-              college_name: this.response.data[i].college_name,
-              credit: this.response.data[i].credit,
-              time: this.response.data[i].time
+              id: this.response.data['courses'][i].id,
+              name: this.response.data['courses'][i].name,
+              college_name: this.response.data['courses'][i].college_name,
+              credit: this.response.data['courses'][i].credit,
+              time: this.response.data['courses'][i].time
             })
           }
         })

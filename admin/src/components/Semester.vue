@@ -400,14 +400,14 @@ export default {
     getSemesters: function () {
       this.$axios.get('semester/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['semesters'].length; i++) {
             this.semesters.push({
-              id: response.data[i].id,
-              year: response.data[i].year,
-              season: response.data[i].season,
-              startDate: response.data[i].start_date,
-              endDate: response.data[i].end_date,
-              status: response.data[i].status
+              id: response.data['semeters'][i].id,
+              year: response.data['semeters'][i].year,
+              season: response.data['semeters'][i].season,
+              startDate: response.data['semeters'][i].start_date,
+              endDate: response.data['semeters'][i].end_date,
+              status: response.data['semeters'][i].status
             })
           }
         })

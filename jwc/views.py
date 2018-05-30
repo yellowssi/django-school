@@ -60,7 +60,7 @@ class CollegeAPI(APIView):
     def get(self, request, format=None):
         colleges = College.objects.all()
         colleges_list = CollegeSerializer(colleges, many=True).data
-        return Response(colleges_list)
+        return Response({'colleges': colleges_list})
 
 
 class StudentLoginAPI(APIView):
@@ -129,7 +129,7 @@ class StudentListAPI(APIView):
     def get(self, request, format=None):
         students = Student.objects.all()
         students_list = StudentSerializer(students, many=True).data
-        return Response(students_list)
+        return Response({'students': students_list})
 
 
 class TeacherListAPI(APIView):
@@ -147,7 +147,7 @@ class AdminListAPI(APIView):
     def get(self, request, format=None):
         admins = User.objects.all().filter(is_admin=True)
         admins_list = AdminSerializer(admins, many=True).data
-        return Response(admins_list)
+        return Response({'admins': admins_list})
 
 
 class CourseAPI(APIView):
@@ -176,9 +176,9 @@ class SemesterAPI(APIView):
     permission_classes = (AdminPermission,)
 
     def get(self, request, format=None):
-        semester = Semester.objects.all()
-        semester_list = SemesterSerializer(semester, many=True).data
-        return Response(semester_list)
+        semesters= Semester.objects.all()
+        semesters_list = SemesterSerializer(semesters, many=True).data
+        return Response({'semesters': semesters_list})
 
     def post(self, request, format=None):
         year = request.data['year']
@@ -238,7 +238,7 @@ class SemesterCourseAPI(APIView):
     def get(self, request, semester_id, format=None):
         semester_courses = SemesterCourse.objects.all().filter(semester__id=semester_id)
         semester_courses_list = SemesterCourseSerializer(semester_courses, many=True).data
-        return Response(semester_courses_list)
+        return Response({'semester_courses': semester_courses_list})
 
     def post(self, request, format=None):
         semester_id = request.data['semester_id']
@@ -267,7 +267,7 @@ class StudentSemesterCourseAPI(APIView):
         student_semester_courses = StudentSemesterCourse.objects.all().filter(student__user__id=student_id,
                                                                               semester_course__semester=semester)
         student_semester_courses_list = StudentCourseSerializer(student_semester_courses, many=True).data
-        return Response(student_semester_courses_list)
+        return Response({'student_semester_courses': student_semester_courses_list})
 
     def post(self, request, format=None):
         student_id = request.session['id']
@@ -297,7 +297,7 @@ class StudentSemesterGradesAPI(APIView):
         semester_courses = StudentSemesterCourse.objects.all().filter(student__user__id=student_id,
                                                                       semester_course__semester__id=semester.id-1)
         grades_list = StudentGradeSerializer(semester_courses, many=True).data
-        return Response(grades_list)
+        return Response({'grades': grades_list})
 
 
 class StudentAllGradesAPI(APIView):
@@ -310,7 +310,7 @@ class StudentAllGradesAPI(APIView):
         courses = StudentSemesterCourse.objects.all().filter(student__user__id=student_id,
                                                              semester_course__id__lt=semester.id)
         grades_list = StudentGradeSerializer(courses, many=True).data
-        return Response(grades_list)
+        return Response({'grades': grades_list})
 
 
 class TeacherSemesterCourseAPI(APIView):
@@ -322,7 +322,7 @@ class TeacherSemesterCourseAPI(APIView):
         semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
         courses = SemesterCourse.objects.all().filter(teacher__user__id=teacher_id, semester=semester)
         courses_list = TeacherCourseSerializer(courses, many=True).data
-        return Response(courses_list)
+        return Response({'courses': courses_list})
 
 
 class TeacherNextSemesterCourseAPI(APIView):
@@ -334,7 +334,7 @@ class TeacherNextSemesterCourseAPI(APIView):
         semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
         courses = SemesterCourse.objects.all().filter(teacher__user__id=teacher_id, semester__id=semester.id+1)
         courses_list = TeacherCourseSerializer(courses, many=True).data
-        return Response(courses_list)
+        return Response({'courses': courses_list})
 
 
 class TeacherCourseStudentListAPI(APIView):
@@ -349,7 +349,7 @@ class TeacherCourseStudentListAPI(APIView):
             if semester_course.teacher.user.id == teacher_id and semester_course.semester == semester:
                 students = StudentSemesterCourse.objects.all().filter(semester_course=semester_course)
                 students_list = CourseStudentListSerializer(students, many=True).data
-                return Response(students_list)
+                return Response({'students': students_list})
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -367,7 +367,7 @@ class TeacherCourseGradesAPI(APIView):
             if semester_course.teacher.user.id == teacher_id and semester_course.semester == semester:
                 students = StudentSemesterCourse.objects.all().filter(semester_course=semester_course)
                 students_list = TeacherGradesSerializer(students, many=True).data
-                return Response(students_list)
+                return Response({'students': students_list})
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)

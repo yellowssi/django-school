@@ -317,16 +317,16 @@ export default {
     getColleges: function () {
       this.$axios.get('college/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['colleges'].length; i++) {
             this.collegeChoices.push({
-              text: response.data[i].name,
-              value: response.data[i].id
+              text: response.data['colleges'][i].name,
+              value: response.data['colleges'][i].id
             })
             this.colleges.push({
-              id: response.data[i].id,
-              name: response.data[i].name,
-              address: response.data[i].address,
-              tel: response.data[i].tel
+              id: response.data['colleges'][i].id,
+              name: response.data['colleges'][i].name,
+              address: response.data['colleges'][i].address,
+              tel: response.data['colleges'][i].tel
             })
           }
         })
@@ -337,15 +337,15 @@ export default {
     getStudents: function () {
       this.$axios.get('student/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['students'].length; i++) {
             this.students.push({
-              id: response.data[i].id,
-              name: response.data[i].name,
-              gender: response.data[i].gender,
-              birth: response.data[i].birth,
-              mobile: response.data[i].mobile,
-              origin: response.data[i].origin,
-              college_name: response.data[i].college_name
+              id: response.data['students'][i].id,
+              name: response.data['students'][i].name,
+              gender: response.data['students'][i].gender,
+              birth: response.data['students'][i].birth,
+              mobile: response.data['students'][i].mobile,
+              origin: response.data['students'][i].origin,
+              college_name: response.data['students'][i].college_name
             })
           }
         })
@@ -356,16 +356,16 @@ export default {
     getTeachers: function () {
       this.$axios.get('teacher/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['teachers'].length; i++) {
             this.students.push({
-              id: response.data[i].id,
-              name: response.data[i].name,
-              gender: response.data[i].gender,
-              birth: response.data[i].birth,
-              mobile: response.data[i].mobile,
-              title: response.data[i].title,
-              salary: response.data[i].salary,
-              college_name: response.data[i].college_name
+              id: response.data['teachers'][i].id,
+              name: response.data['teachers'][i].name,
+              gender: response.data['teachers'][i].gender,
+              birth: response.data['teachers'][i].birth,
+              mobile: response.data['teachers'][i].mobile,
+              title: response.data['teachers'][i].title,
+              salary: response.data['teachers'][i].salary,
+              college_name: response.data['teachers'][i].college_name
             })
           }
         })
@@ -376,13 +376,13 @@ export default {
     getAdmins: function () {
       this.$axios.get('admin/')
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
+          for (let i = 0; i < response.data['admins'].length; i++) {
             this.students.push({
-              id: response.data[i].id,
-              name: response.data[i].name,
-              gender: response.data[i].gender,
-              birth: response.data[i].birth,
-              mobile: response.data[i].mobile
+              id: response.data['admins'][i].id,
+              name: response.data['admins'][i].name,
+              gender: response.data['admins'][i].gender,
+              birth: response.data['admins'][i].birth,
+              mobile: response.data['admins'][i].mobile
             })
           }
         })
