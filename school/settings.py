@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_hosts',
     'rest_framework',
     'jwc',
 ]
@@ -49,11 +50,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
 ROOT_URLCONF = 'school.urls'
 TEACHER_URLCONF = 'school.teacher_urls'
 ADMIN_URLCONF = 'school.admin_urls'
+ROOT_HOSTCONF = 'school.hosts'
+DEFAULT_HOST = 'student'
 
 TEMPLATES = [
     {
@@ -124,6 +128,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'jwc.User'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
