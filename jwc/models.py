@@ -28,7 +28,8 @@ class UserManager(BaseUserManager):
             )
             user.set_password(password)
             user.save()
-            Student.objects.create(user=user, origin=origin, college__id=college_id)
+            college = College.objects.get(id=college_id)
+            Student.objects.create(user=user, origin=origin, college=college)
             return user
 
     def create_teacher(self, id, name, gender, birth, mobile, title, salary, college_id, password=None):
@@ -45,7 +46,8 @@ class UserManager(BaseUserManager):
             )
             user.set_password(password)
             user.save()
-            Teacher.objects.create(user=user, title=title, salary=salary, college__id=college_id)
+            college = College.objects.get(id=college_id)
+            Teacher.objects.create(user=user, title=title, salary=salary, college=college)
             return user
 
     def create_admin(self, id, name, gender, birth, mobile, password=None):
@@ -134,14 +136,15 @@ class Semester(models.Model):
                                   ('spring', '春季学期'),
                                   ('summer', '夏季学期')
                               ), verbose_name='学期')
-    start_date = models.DateField(unique_for_date=True, verbose_name='开始日期')
-    end_date = models.DateField(unique_for_date=True, verbose_name='结束日期')
+    start_date = models.DateField(unique=True, verbose_name='开始日期')
+    end_date = models.DateField(unique=True, verbose_name='结束日期')
     status = models.BooleanField(default=False, verbose_name='是否开放选课')
 
     class Meta:
         db_table = 'semester'
         verbose_name = '学年学期'
         verbose_name_plural = verbose_name
+        unique_together = ('year', 'season')
 
 
 class Course(models.Model):

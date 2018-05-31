@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import VueCookie from 'vue-cookie'
+import VueCookie from 'vue-cookie'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
 import Course from '@/components/Course'
@@ -47,20 +47,20 @@ const router = new Router({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (!VueCookie.get('id')) {
-//     if (to.path === '/login') {
-//       next()
-//     } else {
-//       next('/login')
-//     }
-//   } else {
-//     if (to.path === '/login') {
-//       next('/')
-//     } else {
-//       next()
-//     }
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (!VueCookie.get('id')) {
+    if (to.path === '/login') {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    if (to.path === '/login') {
+      next('/')
+    } else {
+      next()
+    }
+  }
+})
 
 export default router

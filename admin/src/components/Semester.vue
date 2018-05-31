@@ -26,9 +26,9 @@
           <template slot="items" slot-scope="props">
             <td>{{ props.item.id }}</td>
             <td>{{ props.item.year }}</td>
-            <td>{{ props.item.season }}</td>
-            <td>{{ props.item.start_date }}</td>
-            <td>{{ props.item.end_date }}</td>
+            <td>{{ (props.item.season === 'autumn') ? '秋季学期' : ((props.item.season === 'winter') ? '冬季学期' : (props.item.season === 'spring') ? '春季学期' : '夏季学期') }}</td>
+            <td>{{ props.item.startDate }}</td>
+            <td>{{ props.item.endDate }}</td>
             <td>{{ props.item.status ? '已开通' : '未开通' }}</td>
             <td>
               <v-btn icon @click="openSemesterCourse(props.item.id)" :disabled="props.item.status">
@@ -402,12 +402,12 @@ export default {
         .then(response => {
           for (let i = 0; i < response.data['semesters'].length; i++) {
             this.semesters.push({
-              id: response.data['semeters'][i].id,
-              year: response.data['semeters'][i].year,
-              season: response.data['semeters'][i].season,
-              startDate: response.data['semeters'][i].start_date,
-              endDate: response.data['semeters'][i].end_date,
-              status: response.data['semeters'][i].status
+              id: response.data['semesters'][i].id,
+              year: response.data['semesters'][i].year,
+              season: response.data['semesters'][i].season,
+              startDate: response.data['semesters'][i].start_date,
+              endDate: response.data['semesters'][i].end_date,
+              status: response.data['semesters'][i].status
             })
           }
         })
@@ -422,7 +422,7 @@ export default {
             for (let i = 0; i < this.semesters.length; i++) {
               this.semesters[i].status = false
             }
-            this.semesters[semesterId].status = true
+            this.semesters[semesterId - 1].status = true
           }
         })
         .catch(error => {
@@ -433,7 +433,7 @@ export default {
       this.$axios.post('semester/status/', {'semester_id': semesterId, 'operation': 2})
         .then(response => {
           if ('detail' in response.data && response.data['detail'] === 0) {
-            this.semesters[semesterId].status = false
+            this.semesters[semesterId - 1].status = false
           }
         })
         .catch(error => {

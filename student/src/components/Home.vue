@@ -2,14 +2,11 @@
   <div class="Home">
     <v-navigation-drawer fixed :clipped="$vuetify.breakpoint.width > 1264" app v-model="drawer">
       <v-list>
-        <v-list-tile router to="/user">
-          <v-list-tile-content>用户</v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile router to="/semester">
-          <v-list-tile-content>学期</v-list-tile-content>
-        </v-list-tile>
         <v-list-tile router to="/course">
           <v-list-tile-content>课程</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile router to="/grades">
+          <v-list-tile-content>成绩</v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
@@ -33,7 +30,7 @@
     </v-toolbar>
     <v-content>
       <v-container fluid>
-        <router-view></router-view>
+        <router-view name="body"></router-view>
       </v-container>
     </v-content>
   </div>
@@ -58,11 +55,13 @@ export default {
         .then(response => {
           this.$cookie.delete('id')
           this.userID = null
+          this.$router.push('/login')
         })
         .catch(error => {
           console.log(error)
           this.$cookie.delete('id')
           this.userID = null
+          this.$router.push('/login')
         })
     }
   }

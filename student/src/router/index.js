@@ -11,28 +11,30 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      path: '/',
-      redirect: '/home'
-    },
-    {
-      path: '/home',
-      name: 'Home',
-      component: Home
-    },
-    {
       path: '/login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/course',
-      name: 'Course',
-      component: Course
-    },
-    {
-      path: '/grades',
-      name: 'Grades',
-      component: Grades
+      path: '/',
+      name: 'Home',
+      component: Home,
+      children: [
+        {
+          path: 'course',
+          name: 'Course',
+          components: {
+            body: Course
+          }
+        },
+        {
+          path: 'grades',
+          name: 'Grades',
+          components: {
+            body: Grades
+          }
+        }
+      ]
     }
   ]
 })

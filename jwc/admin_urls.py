@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (RegisterAPI, AdminLoginAPI, LogoutAPI, TeacherListAPI, StudentListAPI, AdminListAPI,
-                    SemesterAPI, SemesterStatusAPI, CourseAPI, SemesterCourseAPI, CollegeAPI)
+                    SemesterAPI, SemesterStatusAPI, CourseAPI, CollegeAPI,
+                    AdminGetSemesterCourseAPI, AdminAddSemesterCourseAPI)
 
 urlpatterns = [
     path('login/', AdminLoginAPI.as_view()),
@@ -13,5 +14,6 @@ urlpatterns = [
     path('semester/', SemesterAPI.as_view()),
     path('semester/status/', SemesterStatusAPI.as_view()),
     path('course/', CourseAPI.as_view()),
-    path('course/semester/<int:semester_id>', SemesterCourseAPI.as_view()),
+    path('semester-course/<int:semester_id>/', AdminGetSemesterCourseAPI.as_view()),
+    path('semester-course/', AdminAddSemesterCourseAPI.as_view()),
 ]

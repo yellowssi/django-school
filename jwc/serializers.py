@@ -47,7 +47,7 @@ class SemesterSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.HyperlinkedModelSerializer):
-    college_name = serializers.HyperlinkedModelSerializer(source='college.name')
+    college_name = serializers.ReadOnlyField(source='college.name')
 
     class Meta:
         model = Course
@@ -58,10 +58,11 @@ class SemesterCourseSerializer(serializers.HyperlinkedModelSerializer):
     course_id = serializers.ReadOnlyField(source='course.id')
     course_name = serializers.ReadOnlyField(source='course.name')
     teacher_name = serializers.ReadOnlyField(source='teacher.user.name')
+    credit = serializers.ReadOnlyField(source='course.credit')
 
     class Meta:
         model = SemesterCourse
-        fields = ('id', 'course_id', 'course_name', 'teacher_name', 'time', 'number')
+        fields = ('id', 'course_id', 'course_name', 'teacher_name', 'credit', 'time', 'number')
 
 
 class StudentCourseSerializer(serializers.HyperlinkedModelSerializer):

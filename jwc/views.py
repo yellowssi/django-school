@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .permissions import (StudentPermission, TeacherPermission, AdminPermission)
+from .permissions import (StudentPermission, TeacherPermission, AdminPermission, UserPermission)
 from .models import (College, User, Student, Teacher, Semester, Course, SemesterCourse, StudentSemesterCourse)
 from .serializers import (CollegeSerializer, AdminSerializer, StudentSerializer, TeacherSerializer, SemesterSerializer,
                           CourseSerializer, SemesterCourseSerializer, StudentCourseSerializer, StudentGradeSerializer,
@@ -11,21 +11,7 @@ from .serializers import (CollegeSerializer, AdminSerializer, StudentSerializer,
 
 
 class RegisterAPI(APIView):
-    """
-    Request:
-    (学生){
-        'id': <编号>,
-        'name': <姓名>,
-        'gender': <性别>,
-        'birth': <出生日期>,
-        'mobile': <电话>,
-        'password': <密码>,
-        'identity': 1,
-        'origin': <籍贯>,
-        'college_id': <学院编号>
-    }
-    """
-    permission_classes = (AdminPermission,)
+    permission_classes = (UserPermission, AdminPermission,)
 
     def post(self, request, format=None):
         user_id = request.data['id']
@@ -57,6 +43,8 @@ class RegisterAPI(APIView):
 
 
 class CollegeAPI(APIView):
+    permission_classes = (UserPermission, )
+
     def get(self, request, format=None):
         colleges = College.objects.all()
         colleges_list = CollegeSerializer(colleges, many=True).data
@@ -74,9 +62,9 @@ class StudentLoginAPI(APIView):
                     request.session['id'] = student.id
                     return Response({'detail': 0})
                 else:
-                    return Response({'detail': 1})
+                    return Response({'detail': '学号或密码错误'})
             except Exception as e:
-                return Response({'detail': 1})
+                return Response({'detail': '学号或密码错误'})
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -91,9 +79,9 @@ class TeacherLoginAPI(APIView):
                     request.session['id'] = teacher.id
                     return Response({'detail': 0})
                 else:
-                    return Response({'detail': 1})
+                    return Response({'detail': '学号或密码错误'})
             except Exception as e:
-                return Response({'detail': 1})
+                return Response({'detail': '学号或密码错误'})
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -108,9 +96,9 @@ class AdminLoginAPI(APIView):
                     request.session['id'] = admin.id
                     return Response({'detail': 0})
                 else:
-                    return Response({'detail': 1})
+                    return Response({'detail': '学号或密码错误'})
             except Exception as e:
-                return Response({'detail': 1})
+                return Response({'detail': '学号或密码错误'})
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -124,7 +112,7 @@ class LogoutAPI(APIView):
 
 
 class StudentListAPI(APIView):
-    permission_classes = (AdminPermission,)
+    permission_classes = (UserPermission, AdminPermission,)
 
     def get(self, request, format=None):
         students = Student.objects.all()
@@ -133,16 +121,16 @@ class StudentListAPI(APIView):
 
 
 class TeacherListAPI(APIView):
-    permission_classes = (AdminPermission,)
+    permission_classes = (UserPermission, AdminPermission,)
 
     def get(self, request, format=None):
         teachers = Teacher.objects.all()
         teachers_list = TeacherSerializer(teachers, many=True).data
-        return Response(teachers_list)
+        return Response({'teachers': teachers_list})
 
 
 class AdminListAPI(APIView):
-    permission_classes = (AdminPermission,)
+    permission_classes = (UserPermission, AdminPermission,)
 
     def get(self, request, format=None):
         admins = User.objects.all().filter(is_admin=True)
@@ -151,32 +139,42 @@ class AdminListAPI(APIView):
 
 
 class CourseAPI(APIView):
-    permission_classes = (AdminPermission,)
+    permission_classes = (UserPermission, AdminPermission,)
 
     def get(self, request, format=None):
         courses = Course.objects.all()
         courses_list = CourseSerializer(courses, many=True).data
-        return Response(courses_list)
+        return Response({'courses': courses_list})
 
     def post(self, request, format=None):
-        course_id = request.data['id']
-        course_name = request.data['name']
-        course_college_id = request.data['college_id']
-        course_credit = request.data['credit']
-        course_time = request.data['time']
-        if course_id and course_name and course_college_id and course_credit and course_time:
-            course = Course.objects.create(id=course_id, name=course_name, college__id=course_college_id,
-                                           credit=course_credit, time=course_time)
-            if course:
-                return Response({'detail': 0})
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        operation = request.data['operation']
+        if operation == 1:
+            course_id = request.data['id']
+            course_name = request.data['name']
+            course_college_id = request.data['college_id']
+            course_credit = request.data['credit']
+            course_time = request.data['time']
+            if course_id and course_name and course_college_id and course_credit and course_time:
+                course = Course.objects.create(id=course_id, name=course_name, college_id=course_college_id,
+                                               credit=course_credit, time=course_time)
+                if course:
+                    return Response({'detail': 0})
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        elif operation == 2:
+            course_id = request.data['course_id']
+            if Course.objects.filter(id=course_id).exists():
+                Course.objects.filter(id=course_id).delete()
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class SemesterAPI(APIView):
-    permission_classes = (AdminPermission,)
+    permission_classes = (UserPermission, AdminPermission,)
 
     def get(self, request, format=None):
-        semesters= Semester.objects.all()
+        semesters = Semester.objects.all()
         semesters_list = SemesterSerializer(semesters, many=True).data
         return Response({'semesters': semesters_list})
 
@@ -204,7 +202,7 @@ class SemesterAPI(APIView):
 
 
 class SemesterStatusAPI(APIView):
-    permission_classes = (AdminPermission,)
+    permission_classes = (UserPermission, AdminPermission,)
 
     def post(self, request, format=None):
         semester_id = request.data['semester_id']
@@ -232,34 +230,102 @@ class SemesterStatusAPI(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class SemesterCourseAPI(APIView):
-    permission_classes = (AdminPermission,)
+class AdminGetSemesterCourseAPI(APIView):
+    permission_classes = (UserPermission, AdminPermission,)
 
     def get(self, request, semester_id, format=None):
         semester_courses = SemesterCourse.objects.all().filter(semester__id=semester_id)
         semester_courses_list = SemesterCourseSerializer(semester_courses, many=True).data
         return Response({'semester_courses': semester_courses_list})
 
+
+class AdminAddSemesterCourseAPI(APIView):
+    permission_classes = (UserPermission, AdminPermission,)
+
     def post(self, request, format=None):
-        semester_id = request.data['semester_id']
-        course_id = request.data['course_id']
-        teacher_id = request.data['teacher_id']
-        time = request.data['time']
-        number = request.data['number']
-        if semester_id and course_id and teacher_id and time and number:
-            semester_course = SemesterCourse.objects.create(
-                semester__id=semester_id,
-                course__id=course_id,
-                teacher__id=teacher_id,
-                time=time,
-                number=number)
-            if semester_course:
+        operation = request.data['operation']
+        if operation == 1:
+            semester_id = request.data['semester_id']
+            course_id = request.data['course_id']
+            teacher_id = request.data['teacher_id']
+            time = request.data['time']
+            number = request.data['number']
+            if semester_id and course_id and teacher_id and time and number:
+                semester_course = SemesterCourse.objects.create(
+                    semester_id=semester_id,
+                    course_id=course_id,
+                    teacher_id=teacher_id,
+                    time=time,
+                    number=number)
+                if semester_course:
+                    return Response({'detail': 0})
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        elif operation == 2:
+            semester_course_id = request.data['semester_course_id']
+            if SemesterCourse.objects.filter(id=semester_course_id).exists():
+                SemesterCourse.objects.filter(id=semester_course_id).delete()
                 return Response({'detail': 0})
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class CheckSemesterStatusAPI(APIView):
+    permission_classes = (UserPermission, StudentPermission)
+
+    def get(self, request, format=None):
+        try:
+            semester = Semester.objects.get(status=True)
+            if semester.season == 'autumn':
+                season = '秋季学期'
+            elif semester.season == 'winter':
+                season = '冬季学期'
+            elif semester.season == 'spring':
+                season = '春季学期'
+            else:
+                season = '冬季学期'
+            semester_info = semester.year + season
+            return Response({'semester_info': semester_info})
+        except Exception as e:
+            return Response()
+
+
+class NextSemesterCourseSearchAPI(APIView):
+    def post(self, request, format=None):
+        semester = Semester.objects.get(status=True)
+        if semester:
+            course_id = request.data.get('course_id', False)
+            course_name = request.data.get('course_name', False)
+            if course_id and course_name:
+                semester_courses = SemesterCourse.objects.all().filter(course__id__contains=course_id, course__name__contains=course_name)
+            elif course_id and not course_name:
+                semester_courses = SemesterCourse.objects.all().filter(course__id__contains=course_id)
+            elif not course_id and course_name:
+                semester_courses = SemesterCourse.objects.all().filter(course__name__contains=course_name)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            semester_courses_list = SemesterCourseSerializer(semester_courses, many=True).data
+            for semester_course in semester_courses_list:
+                print(semester_course)
+            return Response({'semester_courses': semester_courses_list})
+        return Response({'detail': '选课系统未开通'})
+
+
+class StudentCourseListAPI(APIView):
+    permission_classes = (UserPermission, StudentPermission)
+
+    def get(self, request, format=None):
+        today = datetime.datetime.today()
+        semester = Semester.objects.get(start_date__lte=today, end_date__gte=today)
+        student_id = request.session['id']
+        courses = StudentSemesterCourse.objects.all().filter(student__user__id=student_id, semester_course__semester=semester)
+        courses_list = StudentCourseSerializer(courses, many=True).data
+        return Response({'courses': courses_list})
 
 
 class StudentSemesterCourseAPI(APIView):
-    permission_classes = (StudentPermission,)
+    permission_classes = (UserPermission, StudentPermission,)
 
     def get(self, request, format=None):
         student_id = request.session['id']
@@ -267,28 +333,45 @@ class StudentSemesterCourseAPI(APIView):
         student_semester_courses = StudentSemesterCourse.objects.all().filter(student__user__id=student_id,
                                                                               semester_course__semester=semester)
         student_semester_courses_list = StudentCourseSerializer(student_semester_courses, many=True).data
-        return Response({'student_semester_courses': student_semester_courses_list})
+        return Response({'courses': student_semester_courses_list})
 
     def post(self, request, format=None):
-        student_id = request.session['id']
-        semester = Semester.objects.get(status=True)
-        semester_course_id = request.data['semester_course_id']
-        try:
-            semester_course = SemesterCourse.objects.get(id=semester_course_id)
-            if semester_course.semester == semester and \
-                    not StudentSemesterCourse.objects.filter(student__user__id=student_id,
-                                                             semester_course__course=semester_course.course,
-                                                             semester_course__semester=semester).exists():
-                StudentSemesterCourse.objects.create(student__user__id=student_id, semester_course=semester_course)
-                return Response({'detail': 0})
-            else:
-                return Response({'detail': 2})
-        except Exception as e:
+        operation = request.data['operation']
+        if operation == 1:
+            student_id = request.session['id']
+            semester = Semester.objects.get(status=True)
+            semester_course_id = request.data['semester_course_id']
+            try:
+                semester_course = SemesterCourse.objects.get(id=semester_course_id)
+                if semester_course.semester == semester and \
+                        not StudentSemesterCourse.objects.filter(student__user__id=student_id,
+                                                                 semester_course__course=semester_course.course,
+                                                                 semester_course__semester=semester).exists():
+                    StudentSemesterCourse.objects.create(student__user__id=student_id, semester_course=semester_course)
+                    return Response({'detail': '选课成功'})
+                else:
+                    return Response({'detail': '选课失败'})
+            except Exception as e:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        elif operation == 2:
+            student_id = request.session['id']
+            semester = Semester.objects.get(status=True)
+            student_semester_course_id = request.data['student_semester_course_id']
+            try:
+                student_semester_course = StudentSemesterCourse.objects.get(id=student_semester_course_id)
+                if student_semester_course.student.user.id == student_id and student_semester_course.semester_course.semester == semester:
+                    student_semester_course.delete()
+                    return Response({'detail': 0})
+                else:
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class StudentSemesterGradesAPI(APIView):
-    permission_classes = (StudentPermission,)
+    permission_classes = (UserPermission, StudentPermission,)
 
     def get(self, request, format=None):
         student_id = request.session['id']
@@ -301,7 +384,7 @@ class StudentSemesterGradesAPI(APIView):
 
 
 class StudentAllGradesAPI(APIView):
-    permission_classes = (StudentPermission,)
+    permission_classes = (UserPermission, StudentPermission,)
 
     def get(self, request, format=None):
         student_id = request.session['id']
@@ -314,7 +397,7 @@ class StudentAllGradesAPI(APIView):
 
 
 class TeacherSemesterCourseAPI(APIView):
-    permission_classes = (TeacherPermission,)
+    permission_classes = (UserPermission, TeacherPermission,)
 
     def get(self, request, format=None):
         teacher_id = request.session['id']
@@ -326,7 +409,7 @@ class TeacherSemesterCourseAPI(APIView):
 
 
 class TeacherNextSemesterCourseAPI(APIView):
-    permission_classes = (TeacherPermission,)
+    permission_classes = (UserPermission, TeacherPermission,)
 
     def get(self, request, format=None):
         teacher_id = request.session['id']
@@ -338,7 +421,7 @@ class TeacherNextSemesterCourseAPI(APIView):
 
 
 class TeacherCourseStudentListAPI(APIView):
-    permission_classes = (TeacherPermission,)
+    permission_classes = (UserPermission, TeacherPermission,)
 
     def get(self, request, semester_course_id, format=None):
         teacher_id = request.session['id']
@@ -356,7 +439,7 @@ class TeacherCourseStudentListAPI(APIView):
 
 
 class TeacherCourseGradesAPI(APIView):
-    permission_classes = (TeacherPermission,)
+    permission_classes = (UserPermission, TeacherPermission,)
 
     def get(self, request, semester_course_id, format=None):
         teacher_id = request.session['id']

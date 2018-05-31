@@ -357,7 +357,7 @@ export default {
       this.$axios.get('teacher/')
         .then(response => {
           for (let i = 0; i < response.data['teachers'].length; i++) {
-            this.students.push({
+            this.teachers.push({
               id: response.data['teachers'][i].id,
               name: response.data['teachers'][i].name,
               gender: response.data['teachers'][i].gender,
@@ -377,7 +377,7 @@ export default {
       this.$axios.get('admin/')
         .then(response => {
           for (let i = 0; i < response.data['admins'].length; i++) {
-            this.students.push({
+            this.admins.push({
               id: response.data['admins'][i].id,
               name: response.data['admins'][i].name,
               gender: response.data['admins'][i].gender,
@@ -393,6 +393,7 @@ export default {
     addUser: function () {
       if (this.newUser.identity === 1) {
         let newUserData = JSON.stringify({
+          identity: this.newUser.identity,
           id: this.newUser.id,
           name: this.newUser.name,
           gender: this.newUser.gender,
@@ -400,6 +401,47 @@ export default {
           mobile: this.newUser.mobile,
           origin: this.newUser.origin,
           college_id: this.newUser.college_id,
+          password: this.newUser.password
+        })
+        this.$axios.post('register/', newUserData)
+          .then(response => {
+            if ('detail' in response.data && response.data['detail'] === 0) {
+              window.alert('创建成功')
+            }
+          })
+          .catch(error => {
+            window.alert(error)
+          })
+      } else if (this.newUser.identity === 2) {
+        let newUserData = JSON.stringify({
+          identity: this.newUser.identity,
+          id: this.newUser.id,
+          name: this.newUser.name,
+          gender: this.newUser.gender,
+          birth: this.newUser.birth,
+          mobile: this.newUser.mobile,
+          title: this.newUser.title,
+          salary: this.newUser.salary,
+          college_id: this.newUser.college_id,
+          password: this.newUser.password
+        })
+        this.$axios.post('register/', newUserData)
+          .then(response => {
+            if ('detail' in response.data && response.data['detail'] === 0) {
+              window.alert('创建成功')
+            }
+          })
+          .catch(error => {
+            window.alert(error)
+          })
+      } else if (this.newUser.identity === 3) {
+        let newUserData = JSON.stringify({
+          identity: this.newUser.identity,
+          id: this.newUser.id,
+          name: this.newUser.name,
+          gender: this.newUser.gender,
+          birth: this.newUser.birth,
+          mobile: this.newUser.mobile,
           password: this.newUser.password
         })
         this.$axios.post('register/', newUserData)

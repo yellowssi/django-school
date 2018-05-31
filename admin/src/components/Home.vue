@@ -58,11 +58,13 @@ export default {
         .then(response => {
           this.$cookie.delete('id')
           this.userID = null
+          this.$router.push('/login')
         })
         .catch(error => {
           console.log(error)
           this.$cookie.delete('id')
           this.userID = null
+          this.$router.push('/login')
         })
     }
   }
