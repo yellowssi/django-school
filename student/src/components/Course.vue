@@ -9,23 +9,49 @@
         color="cyan"
         slider-color="yellow"
       >
-        <v-tab v-if="searchCourse.status">
-          选课
-        </v-tab>
-        <v-tab v-if="searchCourse.status">
-          下学期课表
-        </v-tab>
         <v-tab>
           本学期课表
+        </v-tab>
+        <v-tab>
+          选课
+        </v-tab>
+        <v-tab>
+          下学期课表
         </v-tab>
       </v-tabs>
     </v-toolbar>
     <v-tabs-items v-model="tab">
-      <v-tab-item v-if="searchCourse.status">
+      <v-tab-item>
+        <v-data-table
+          :headers="semesterCourseHeaders"
+          :items="semesterCourses"
+          item-key="id">
+          <template slot="items" slot-scope="props">
+            <td>{{ props.item.courseId }}</td>
+            <td>{{ props.item.courseName }}</td>
+            <td>{{ props.item.courseCredit }}</td>
+            <td>{{ props.item.teacherName }}</td>
+            <td>{{ props.item.time }}</td>
+          </template>
+        </v-data-table>
+      </v-tab-item>
+      <v-tab-item>
+        <h3 v-show="!searchCourseInfo.status">选课时间未到!</h3>
+        <h3 v-show="searchCourseInfo.status">{{ searchCourseInfo.semester }}</h3>
+        <v-text-field
+          label="课程编号"
+          v-model="searchCourseInfo.courseId"
+          v-show="searchCourseInfo.status"></v-text-field>
+        <v-text-field
+          label="课程名称"
+          v-model="searchCourseInfo.courseName"
+          v-show="searchCourseInfo.status"></v-text-field>
+        <v-btn color="primary" @click="searchCourse()" v-show="searchCourseInfo.status">搜索</v-btn>
         <v-data-table
           :headers="courseHeaders"
           :items="courses"
-          item-key="id">
+          item-key="id"
+          v-show="searchCourseInfo.searched">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.courseId }}</td>
             <td>{{ props.item.courseName }}</td>
@@ -41,11 +67,13 @@
           </template>
         </v-data-table>
       </v-tab-item>
-      <v-tab-item v-if="searchCourse.status">
+      <v-tab-item>
+        <h3 v-show="!searchCourseInfo.status">选课时间未到!</h3>
         <v-data-table
           :headers="nextSemesterCourseHeaders"
           :items="nextSemesterCourses"
-          item-key="id">
+          item-key="id"
+          v-show="searchCourseInfo.status">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.courseId }}</td>
             <td>{{ props.item.courseName }}</td>
@@ -60,20 +88,6 @@
           </template>
         </v-data-table>
       </v-tab-item>
-        <v-data-table
-          :headers="semesterCourseHeaders"
-          :items="semesterCourses"
-          item-key="id">
-          <template slot="items" slot-scope="props">
-            <td>{{ props.item.courseId }}</td>
-            <td>{{ props.item.courseName }}</td>
-            <td>{{ props.item.courseCredit }}</td>
-            <td>{{ props.item.teacherName }}</td>
-            <td>{{ props.item.time }}</td>
-          </template>
-        </v-data-table>
-      <v-tab-item>
-      </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
@@ -83,7 +97,8 @@ export default {
   name: 'Course',
   data: () => ({
     tab: null,
-    courses: [
+    courses: [],
+    courseHeaders: [
       {
         text: '课程编号',
         value: 'courseId'
@@ -114,7 +129,6 @@ export default {
         sortable: false
       }
     ],
-    courseHeaders: [],
     semesterCourses: [],
     nextSemesterCourses: [],
     semesterCourseHeaders: [
@@ -177,17 +191,15 @@ export default {
   mounted: function () {
     this.checkSemesterStatus()
     this.getSemesterCourse()
-    if (this.searchCourseInfo.status) {
-      this.getNextSemesterCourse()
-    }
   },
   methods: {
     checkSemesterStatus: function () {
       this.$axios.get('semester/')
         .then(response => {
           if ('semester_info' in response.data) {
-            this.searchCourse.status = true
-            this.searchCourse.semseter = response.data['semester_info']
+            this.searchCourseInfo.status = true
+            this.searchCourseInfo.semseter = response.data['semester_info']
+            this.getNextSemesterCourse()
           }
         })
         .catch(error => {
@@ -199,12 +211,12 @@ export default {
         .then(response => {
           for (let i = 0; i < response.data['courses'].length; i++) {
             this.semesterCourses.push({
-              id: response.data['courses'].id,
-              courseId: response.data['courses'].course_id,
-              courseName: response.data['courses'].course_name,
-              courseCredit: response.data['courses'].course_credit,
-              teacherName: response.data['courses'].teacher_name,
-              time: response.data['courses'].time
+              id: response.data['courses'][i].id,
+              courseId: response.data['courses'][i].course_id,
+              courseName: response.data['courses'][i].course_name,
+              courseCredit: response.data['courses'][i].course_credit,
+              teacherName: response.data['courses'][i].teacher_name,
+              time: response.data['courses'][i].time
             })
           }
         })
@@ -217,12 +229,12 @@ export default {
         .then(response => {
           for (let i = 0; i < response.data['courses'].length; i++) {
             this.nextSemesterCourses.push({
-              id: response.data['courses'].id,
-              courseId: response.data['courses'].course_id,
-              courseName: response.data['courses'].course_name,
-              courseCredit: response.data['courses'].course_credit,
-              teacherName: response.data['courses'].teacher_name,
-              time: response.data['courses'].time
+              id: response.data['courses'][i].id,
+              courseId: response.data['courses'][i].course_id,
+              courseName: response.data['courses'][i].course_name,
+              courseCredit: response.data['courses'][i].course_credit,
+              teacherName: response.data['courses'][i].teacher_name,
+              time: response.data['courses'][i].time
             })
           }
         })
@@ -237,16 +249,17 @@ export default {
       })
       this.$axios.post('course/next/search/', Info)
         .then(response => {
-          this.searchCourse.searched = true
+          this.searchCourseInfo.searched = true
+          this.courses = []
           for (let i = 0; i < response.data['semester_courses'].length; i++) {
             this.courses.push({
-              id: response.data['courses'].id,
-              courseId: response.data['courses'].course_id,
-              courseName: response.data['courses'].course_name,
-              credit: response.data['courses'].course_credit,
-              teacherName: response.data['courses'].teacher_name,
-              time: response.data['courses'].time,
-              number: response.data['courses'].number
+              id: response.data['semester_courses'][i].id,
+              courseId: response.data['semester_courses'][i].course_id,
+              courseName: response.data['semester_courses'][i].course_name,
+              credit: response.data['semester_courses'][i].credit,
+              teacherName: response.data['semester_courses'][i].teacher_name,
+              time: response.data['semester_courses'][i].time,
+              number: response.data['semester_courses'][i].number
             })
           }
         })

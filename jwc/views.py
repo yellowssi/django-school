@@ -298,16 +298,17 @@ class NextSemesterCourseSearchAPI(APIView):
             course_id = request.data.get('course_id', False)
             course_name = request.data.get('course_name', False)
             if course_id and course_name:
-                semester_courses = SemesterCourse.objects.all().filter(course__id__contains=course_id, course__name__contains=course_name)
+                semester_courses = SemesterCourse.objects.all().filter(course__id__contains=course_id, course__name__contains=course_name, semester=semester)
             elif course_id and not course_name:
-                semester_courses = SemesterCourse.objects.all().filter(course__id__contains=course_id)
+                semester_courses = SemesterCourse.objects.all().filter(course__id__contains=course_id, semester=semester)
             elif not course_id and course_name:
-                semester_courses = SemesterCourse.objects.all().filter(course__name__contains=course_name)
+                semester_courses = SemesterCourse.objects.all().filter(course__name__contains=course_name, semester=semester)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             semester_courses_list = SemesterCourseSerializer(semester_courses, many=True).data
             for semester_course in semester_courses_list:
-                print(semester_course)
+                number = StudentSemesterCourse.objects.filter(semester_course__id=semester_course['id']).count()
+                semester_course['number'] = str(number) + '/' + str(semester_course['number'])
             return Response({'semester_courses': semester_courses_list})
         return Response({'detail': '选课系统未开通'})
 
@@ -347,7 +348,7 @@ class StudentSemesterCourseAPI(APIView):
                         not StudentSemesterCourse.objects.filter(student__user__id=student_id,
                                                                  semester_course__course=semester_course.course,
                                                                  semester_course__semester=semester).exists():
-                    StudentSemesterCourse.objects.create(student__user__id=student_id, semester_course=semester_course)
+                    StudentSemesterCourse.objects.create(student_id=student_id, semester_course=semester_course)
                     return Response({'detail': '选课成功'})
                 else:
                     return Response({'detail': '选课失败'})
@@ -356,12 +357,12 @@ class StudentSemesterCourseAPI(APIView):
         elif operation == 2:
             student_id = request.session['id']
             semester = Semester.objects.get(status=True)
-            student_semester_course_id = request.data['student_semester_course_id']
+            student_semester_course_id = request.data['semester_course_id']
             try:
                 student_semester_course = StudentSemesterCourse.objects.get(id=student_semester_course_id)
                 if student_semester_course.student.user.id == student_id and student_semester_course.semester_course.semester == semester:
                     student_semester_course.delete()
-                    return Response({'detail': 0})
+                    return Response({'detail': '退课成功'})
                 else:
                     return Response(status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
@@ -402,7 +403,7 @@ class TeacherSemesterCourseAPI(APIView):
     def get(self, request, format=None):
         teacher_id = request.session['id']
         today = datetime.datetime.today()
-        semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
+        semester = Semester.objects.get(start_date__lte=today, end_date__gte=today)
         courses = SemesterCourse.objects.all().filter(teacher__user__id=teacher_id, semester=semester)
         courses_list = TeacherCourseSerializer(courses, many=True).data
         return Response({'courses': courses_list})
@@ -414,7 +415,7 @@ class TeacherNextSemesterCourseAPI(APIView):
     def get(self, request, format=None):
         teacher_id = request.session['id']
         today = datetime.datetime.today()
-        semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
+        semester = Semester.objects.get(start_date__lte=today, end_date__gte=today)
         courses = SemesterCourse.objects.all().filter(teacher__user__id=teacher_id, semester__id=semester.id+1)
         courses_list = TeacherCourseSerializer(courses, many=True).data
         return Response({'courses': courses_list})

@@ -52,7 +52,7 @@
             <td>{{ (props.item.gender === 'male') ? '男' : '女' }}</td>
             <td>{{ props.item.birth }}</td>
             <td>{{ props.item.mobile }}</td>
-            <td>{{ props.item.title }}</td>
+            <td>{{ (props.item.title === 'professor') ? '教授' : ((props.item.title === 'associate') ? '副教授' : ((props.item.title === 'lecture') ? '讲师' : '助教')) }}</td>
             <td>{{ props.item.salary }}</td>
             <td>{{ props.item.college_name }}</td>
           </template>
