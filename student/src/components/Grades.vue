@@ -10,7 +10,7 @@
         slider-color="yellow"
       >
         <v-tab>
-          本学期成绩
+          学期成绩
         </v-tab>
         <v-tab>
           成绩大表
@@ -19,6 +19,7 @@
     </v-toolbar>
     <v-tabs-items v-model="tab">
       <v-tab-item>
+        <h3>平均绩点: {{ semesterGPA }}</h3>
         <v-data-table
           :headers="gradesHeaders"
           :items="semesterGrades"
@@ -33,6 +34,7 @@
         </v-data-table>
       </v-tab-item>
       <v-tab-item>
+        <h3>平均绩点: {{ allGPA }}</h3>
         <v-data-table
           :headers="gradesHeaders"
           :items="allGrades"
@@ -82,6 +84,11 @@ export default {
       }
     ]
   }),
+  updated: function () {
+    if (!this.semesterGPA || !this.allGPA) {
+      this.getAverageGPA()
+    }
+  },
   mounted: function () {
     this.getSemesterGrades()
     this.getAllGrades()
@@ -149,18 +156,21 @@ export default {
       this.$axios.get('grades/all/')
         .then(response => {
           for (let i = 0; i < response.data['grades'].length; i++) {
-            this.allGrades.push({
-              courseId: response.data['grades'][i].course_id,
-              courseName: response.data['grades'][i].course_name,
-              courseCredit: response.data['grades'][i].course_credit,
-              sgrade: response.data['grades'][i].sgrade,
-              gpa: this.getCourseGPA(response.data['grades'][i].sgrade)
-            })
+            if (response.data['grades'][i].sgrade) {
+              this.allGrades.push({
+                courseId: response.data['grades'][i].course_id,
+                courseName: response.data['grades'][i].course_name,
+                courseCredit: response.data['grades'][i].course_credit,
+                sgrade: response.data['grades'][i].sgrade,
+                gpa: this.getCourseGPA(response.data['grades'][i].sgrade)
+              })
+            }
           }
         })
         .catch(error => {
           window.alert(error)
         })
+      this.getAverageGPA()
     }
   }
 }

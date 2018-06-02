@@ -37,7 +37,7 @@
       </v-tab-item>
       <v-tab-item>
         <h3 v-show="!searchCourseInfo.status">选课时间未到!</h3>
-        <h3 v-show="searchCourseInfo.status">{{ searchCourseInfo.semester }}</h3>
+        <h3>{{ searchCourseInfo.semester }}</h3>
         <v-text-field
           label="课程编号"
           v-model="searchCourseInfo.courseId"
