@@ -9,5 +9,5 @@ urlpatterns = [
     path('course/', TeacherSemesterCourseAPI.as_view()),
     path('course/next/', TeacherNextSemesterCourseAPI.as_view()),
     path('course/students-list/<int:semester_course_id>/', TeacherCourseStudentListAPI.as_view()),
-    path('course/grades/<int:semester_course_id>', TeacherCourseGradesAPI.as_view()),
+    path('course/grades/<int:semester_course_id>/', TeacherCourseGradesAPI.as_view()),
 ]

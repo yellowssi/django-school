@@ -236,6 +236,9 @@ class AdminGetSemesterCourseAPI(APIView):
     def get(self, request, semester_id, format=None):
         semester_courses = SemesterCourse.objects.all().filter(semester__id=semester_id)
         semester_courses_list = SemesterCourseSerializer(semester_courses, many=True).data
+        for semester_course in semester_courses_list:
+            number = StudentSemesterCourse.objects.filter(semester_course__id=semester_course['id']).count()
+            semester_course['number'] = str(number) + '/' + str(semester_course['number'])
         return Response({'semester_courses': semester_courses_list})
 
 
@@ -377,9 +380,9 @@ class StudentSemesterGradesAPI(APIView):
     def get(self, request, format=None):
         student_id = request.session['id']
         today = datetime.datetime.today()
-        semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
+        semester = Semester.objects.get(start_date__lte=today, end_date__gte=today)
         semester_courses = StudentSemesterCourse.objects.all().filter(student__user__id=student_id,
-                                                                      semester_course__semester__id=semester.id-1)
+                                                                      semester_course__semester__id=semester.id)
         grades_list = StudentGradeSerializer(semester_courses, many=True).data
         return Response({'grades': grades_list})
 
@@ -389,10 +392,7 @@ class StudentAllGradesAPI(APIView):
 
     def get(self, request, format=None):
         student_id = request.session['id']
-        today = datetime.datetime.today()
-        semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
-        courses = StudentSemesterCourse.objects.all().filter(student__user__id=student_id,
-                                                             semester_course__id__lt=semester.id)
+        courses = StudentSemesterCourse.objects.all().filter(student__user__id=student_id)
         grades_list = StudentGradeSerializer(courses, many=True).data
         return Response({'grades': grades_list})
 
@@ -406,6 +406,9 @@ class TeacherSemesterCourseAPI(APIView):
         semester = Semester.objects.get(start_date__lte=today, end_date__gte=today)
         courses = SemesterCourse.objects.all().filter(teacher__user__id=teacher_id, semester=semester)
         courses_list = TeacherCourseSerializer(courses, many=True).data
+        for course in courses_list:
+            number = StudentSemesterCourse.objects.filter(semester_course__id=course['id']).count()
+            course['number'] = str(number)
         return Response({'courses': courses_list})
 
 
@@ -429,7 +432,7 @@ class TeacherCourseStudentListAPI(APIView):
         try:
             semester_course = SemesterCourse.objects.get(id=semester_course_id)
             today = datetime.datetime.today()
-            semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
+            semester = Semester.objects.get(start_date__lte=today, end_date__gte=today)
             if semester_course.teacher.user.id == teacher_id and semester_course.semester == semester:
                 students = StudentSemesterCourse.objects.all().filter(semester_course=semester_course)
                 students_list = CourseStudentListSerializer(students, many=True).data
@@ -447,7 +450,7 @@ class TeacherCourseGradesAPI(APIView):
         try:
             semester_course = SemesterCourse.objects.get(id=semester_course_id)
             today = datetime.datetime.today()
-            semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
+            semester = Semester.objects.get(start_date__lte=today, end_date__gte=today)
             if semester_course.teacher.user.id == teacher_id and semester_course.semester == semester:
                 students = StudentSemesterCourse.objects.all().filter(semester_course=semester_course)
                 students_list = TeacherGradesSerializer(students, many=True).data
@@ -456,17 +459,18 @@ class TeacherCourseGradesAPI(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request, format=None):
+    def post(self, request, semester_course_id, format=None):
         teacher_id = request.session['id']
         grades_list = request.data['grades']
         today = datetime.datetime.today()
-        semester = Semester.objects.filter(start_date__lte=today, end_date__gte=today)
+        semester = Semester.objects.get(start_date__lte=today, end_date__gte=today)
         for grades in grades_list:
-            student_semester_course = StudentSemesterCourse.objects.get(id=grades.id)
+            student_semester_course = StudentSemesterCourse.objects.get(id=grades['id'])
             if student_semester_course.semester_course.teacher.user.id == teacher_id and student_semester_course.semester_course.semester == semester:
-                student_semester_course.pgrade = grades.pgrade
-                student_semester_course.egrade = grades.egrade
-                student_semester_course.sgrade = grades.pgrade*0.5 + grades.egrade*0.5
+                student_semester_course.pgrade = grades['pgrade']
+                student_semester_course.egrade = grades['egrade']
+                student_semester_course.sgrade = str(int(grades['pgrade'])*0.5 + int(grades['egrade'])*0.5)
+                student_semester_course.save()
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response({'detail': 0})

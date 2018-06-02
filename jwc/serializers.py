@@ -77,15 +77,14 @@ class StudentCourseSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'course_id', 'course_name', 'course_credit', 'teacher_name', 'time')
 
 
-class StudentGradeSericdalizer(serializers.HyperlinkedModelSerializer):
+class StudentGradeSerializer(serializers.HyperlinkedModelSerializer):
     course_id = serializers.ReadOnlyField(source='semester_course.course.id')
     course_name = serializers.ReadOnlyField(source='semester_course.course.name')
     course_credit = serializers.ReadOnlyField(source='semester_course.course.credit')
-    teacher_name = serializers.ReadOnlyField(source='semester_course.teacher.name')
 
     class Meta:
         model = StudentSemesterCourse
-        fields = ('id', 'course_id', 'course_name', 'course_credit', 'teacher_name', 'sgrade')
+        fields = ('id', 'course_id', 'course_name', 'course_credit', 'sgrade')
 
 
 class TeacherCourseSerializer(serializers.HyperlinkedModelSerializer):

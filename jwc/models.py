@@ -180,9 +180,9 @@ class StudentSemesterCourse(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, verbose_name='编号')
     student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name='学生')
     semester_course = models.ForeignKey(SemesterCourse, on_delete=models.PROTECT, verbose_name='学期课程')
-    pgrade = models.CharField(max_length=3, null=True, verbose_name='平时成绩')
-    egrade = models.CharField(max_length=3, null=True, verbose_name='考试成绩')
-    sgrade = models.CharField(max_length=3, null=True, verbose_name='总评成绩')
+    pgrade = models.CharField(max_length=5, null=True, verbose_name='平时成绩')
+    egrade = models.CharField(max_length=5, null=True, verbose_name='考试成绩')
+    sgrade = models.CharField(max_length=5, null=True, verbose_name='总评成绩')
 
     class Meta:
         db_table = 'student_semester_course'
